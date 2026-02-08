@@ -5,6 +5,19 @@ import os
 app = Flask(__name__)
 FLAG = os.environ.get("FLAG","CTF{dev}")
 
+@app.route("/")
+def index():
+    return """
+<h2>Refund Workflow Service</h2>
+<p>Multi-step refund processing backend.</p>
+<ul>
+<li>POST /refund/start</li>
+<li>POST /refund/confirm</li>
+<li>GET /health</li>
+</ul>
+<p>Refunds are processed through a wizard style flow.</p>
+"""
+
 @app.route("/health")
 def health():
     return "ok"
@@ -15,7 +28,6 @@ def start():
 
 @app.route("/refund/confirm", methods=["POST"])
 def confirm():
-    # BUG: no validation of previous step
     return jsonify({"status":"refunded","flag":FLAG})
 
 if __name__ == "__main__":
